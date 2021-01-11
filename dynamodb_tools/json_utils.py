@@ -19,13 +19,15 @@ def _decimal_to_number(val):
 def _load_incompatible_types(obj):
     """Walks dicts and lists and ensures JSON compatible types"""
     if isinstance(obj, list):
-        for i in range(len(obj)):
-            obj[i] = _load_incompatible_types(obj[i])
-        return obj
+        return [
+            _load_incompatible_types(obj[i])
+            for i in range(len(obj))
+        ]
     elif isinstance(obj, dict):
-        for k in obj:
-            obj[k] = _load_incompatible_types(obj[k])
-        return obj
+        return {
+            k: _load_incompatible_types(v)
+            for k, v in obj.items()
+        }
     elif isinstance(obj, set):
         return [ _load_incompatible_types(k) for k in obj ]
     elif isinstance(obj, Decimal):
@@ -64,13 +66,15 @@ def loads(data, to_json=True):
 def _dump_incompatible_types(obj):
     """Walks dicts and lists and replaces incompatible types"""
     if isinstance(obj, list):
-        for i in range(len(obj)):
-            obj[i] = _dump_incompatible_types(obj[i])
-        return obj
+        return [
+            _dump_incompatible_types(obj[i])
+            for i in range(len(obj))
+        ]
     elif isinstance(obj, dict):
-        for k in obj.keys():
-            obj[k] = _dump_incompatible_types(obj[k])
-        return obj
+        return {
+            k: _dump_incompatible_types(v)
+            for k, v in obj.items()
+        }
     elif isinstance(obj, set):
         return { _dump_incompatible_types(k) for k in obj }
     elif isinstance(obj, float):

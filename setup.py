@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='dynamodb_tools',
-    version='1.0.0',
+    version='1.0.1',
     packages=[ 'dynamodb_tools' ],
     install_requires=[ 'boto3' ],
     provides=[ 'dynamodb_tools' ],
